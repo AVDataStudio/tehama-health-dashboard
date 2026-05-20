@@ -24,50 +24,34 @@ Labor Force
 Households & Language
 
 ## Architecture
-┌─────────────────────────────────────────────────────────────┐
-│  Federal & State APIs                                        │
-│  (Census ACS · SAHIE · CBP)                                  │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Python Ingestion Layer                                      │
-│  • Automated fetch scripts (JupyterLab notebooks)            │
-│  • Multi-year, multi-geography support                       │
-│  • Handles B-tables, S-tables, and DP-tables                 │
-│  • Census suppression code cleanup (-666666666 → NaN)        │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Raw Data Layer (Parquet)                                    │
-│  • data/raw/census/  · ACS data                              │
-│  • data/raw/sahie/   · Health insurance data                 │
-│  • data/raw/cbp/     · Employment data                       │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Processing Layer                                            │
-│  • Rate calculations (poverty, homeownership, age brackets)  │
-│  • Geography combining (County + California + US)            │
-│  • Year-over-year change calculations                        │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Final Dataset (Parquet)                                     │
-│  • data/final/County_dashboard_data.parquet                  │
-│  • Single source for Power BI dashboard                      │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Power BI Dashboard                                          │
-│  • Page 1: Category navigation (18 tiles)                    │
-│  • Page 2: Demographics indicator overview                   │
-│  • Page 3: Dynamic indicator detail (drill-through)          │
-└─────────────────────────────────────────────────────────────┘
+Federal & State APIs (Census ACS, SAHIE, CBP)
+              |
+              v
+Python Ingestion Layer
+  - Automated fetch scripts (JupyterLab notebooks)
+  - Multi-year, multi-geography support
+  - Handles B-tables, S-tables, and DP-tables
+  - Census suppression code cleanup
+              |
+              v
+Raw Data Layer (Parquet)
+  - data/raw/census/  - ACS data
+  - data/raw/sahie/   - Health insurance data
+  - data/raw/cbp/     - Employment data
+              |
+              v
+Processing Layer
+  - Rate calculations (poverty, homeownership, age brackets)
+  - Geography combining (Tehama + California + US)
+  - Year-over-year change calculations
+              |
+              v
+Final Dataset (Parquet)
+  - data/final/tehama_dashboard_data.parquet
+  - Single source for Power BI dashboard
+              |
+              v
+Power BI Dashboard
 
 ## Dashboard Design
 The dashboard follows a three-tier navigation pattern:
